@@ -4,6 +4,7 @@ namespace AuthService.Application.Services
 {
     public interface IUserService
     {
-         Task<bool> UserExistsAsync(string username);
+        Task RegisterAsync(string username, string password, string email = "");
+        Task<bool> UserExistsAsync(string username);
     }
 }
