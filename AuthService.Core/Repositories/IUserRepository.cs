@@ -1,10 +1,11 @@
 using System.Threading.Tasks;
-using AuthService.Core.Entities;
+using AuthService.Core.Models;
 
 namespace AuthService.Core.Repositories
 {
     public interface IUserRepository
     {
+        Task<User> GetUserByUsernameAsync(string username);
          Task AddAsync(User user);
     }
 }

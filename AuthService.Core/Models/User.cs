@@ -1,6 +1,6 @@
 using System;
 
-namespace AuthService.Core.Entities
+namespace AuthService.Core.Models
 {
     public class User
     {
@@ -13,8 +13,12 @@ namespace AuthService.Core.Entities
         public DateTime CreatedAt { get; private set; }
         public DateTime LastActive  { get; set; }
 
-        public User(int id, string username, string email, string avatarUrl,
-                    byte[] passwordHash, byte[] saltHash)
+        public User(int id, 
+                    string username, 
+                    string email, 
+                    string avatarUrl,
+                    byte[] passwordHash, 
+                    byte[] saltHash)
         {
             this.Id = id;
             this.Username = username;
@@ -22,6 +26,8 @@ namespace AuthService.Core.Entities
             this.AvatarUrl = avatarUrl;
             this.PasswordHash = passwordHash;
             this.SaltHash = saltHash;
+            this.CreatedAt = DateTime.UtcNow;
+            this.LastActive = DateTime.UtcNow;
         }
     }
 }
