@@ -1,3 +1,5 @@
+using System;
+
 namespace AuthService.Core.Entities
 {
     public class User
@@ -8,6 +10,8 @@ namespace AuthService.Core.Entities
         public string AvatarUrl { get; private set; }
         public byte[] PasswordHash { get; private set; }
         public byte[] SaltHash { get; private set; }
+        public DateTime CreatedAt { get; private set; }
+        public DateTime LastActive  { get; set; }
 
         public User(int id, string username, string email, string avatarUrl,
                     byte[] passwordHash, byte[] saltHash)
