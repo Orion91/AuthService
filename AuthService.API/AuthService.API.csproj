@@ -2,9 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>AuthService.API</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AuthService.Application\AuthService.Application.csproj"/>
+    <ProjectReference Include="..\AuthService.Infrastructure\AuthService.Infrastructure.csproj"/>
   </ItemGroup>
 
 </Project>
