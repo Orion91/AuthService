@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
-using AuthService.Application.Services;
+using AuthService.Application.Commands;
+using AuthService.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthService.API.Controllers
@@ -15,8 +16,8 @@ namespace AuthService.API.Controllers
             _userService = userService;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register()
+        [HttpPost("signUp")]
+        public async Task<IActionResult> SignUp(SignUp command)
         {
             return Ok();
         }
