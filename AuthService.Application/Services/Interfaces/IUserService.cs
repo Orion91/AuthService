@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace AuthService.Application.Services
+namespace AuthService.Application.Services.Interfaces
 {
     public interface IUserService
     {

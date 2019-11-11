@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using AuthService.Application.Services;
+using AuthService.Application.Services.Interfaces;
 using AuthService.Core.Models;
 using AuthService.Core.Repositories;
 
-namespace AuthService.Infrastructure.Services
+namespace AuthService.Application.Services.Implementations
 {
     public class UserService : IUserService
     {

@@ -7,7 +7,6 @@ namespace AuthService.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private static ISet<User> _users = new HashSet<User>();
         public Task AddAsync(User user)
         {
             throw new System.NotImplementedException();
