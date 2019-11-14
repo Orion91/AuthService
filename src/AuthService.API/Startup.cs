@@ -20,6 +20,7 @@ namespace AuthService.API
 {
     public class Startup
     {
+        public IContainer ApplicationContainer { get; private set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,16 +29,22 @@ namespace AuthService.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPasswordService, PasswordService>();  
             services.AddControllers();
+
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+            ApplicationContainer = builder.Build();
+
+            return new AutofacServiceProvider(ApplicationContainer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApplicationLifetime appLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -54,6 +61,8 @@ namespace AuthService.API
             {
                 endpoints.MapControllers();
             });
+
+            appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }
     }
 }

@@ -9,6 +9,8 @@
   <ItemGroup>
     <ProjectReference Include="..\AuthService.Application\AuthService.Application.csproj"/>
     <ProjectReference Include="..\AuthService.Infrastructure\AuthService.Infrastructure.csproj"/>
+    <PackageReference Include="Autofac" Version="4.9.4"/>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1"/>
   </ItemGroup>
 
 </Project>
