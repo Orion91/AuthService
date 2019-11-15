@@ -10,16 +10,20 @@ namespace AuthService.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ICommandDispatcher _commandDispatcher;
 
-        public AuthController(IUserService userService)
+        public AuthController(IUserService userService, ICommandDispatcher commandDispatcher)
         {
             _userService = userService;
+            _commandDispatcher = commandDispatcher;
         }
 
         [HttpPost("signUp")]
         public async Task<IActionResult> SignUp(SignUp command)
         {
-            return Ok();
+            await _commandDispatcher.DispatchAsync(command);
+            
+            return Created();
         }
     }
 }
