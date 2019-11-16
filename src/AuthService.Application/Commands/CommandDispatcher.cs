@@ -1,3 +1,8 @@
+using AuthService.Application.CQRS;
+using Autofac;
+using System;
+using System.Threading.Tasks;
+
 namespace AuthService.Application.Commands
 {
     public class CommandDispatcher : ICommandDispatcher
@@ -8,7 +13,7 @@ namespace AuthService.Application.Commands
         {
             _context = context;
         }
-        public async DispatchAsync<T>(T command) where T : ICommand
+        public async Task DispatchAsync<T>(T command) where T : ICommand
         {
             if(command == null)
             {
@@ -18,5 +23,5 @@ namespace AuthService.Application.Commands
             var handler = _context.Resolve<ICommandHandler<T>>();
             await handler.HandleAsync(command);
         }
-    }
+	}
 }

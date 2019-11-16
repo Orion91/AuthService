@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AuthService.Application.Commands;
+using AuthService.Application.CQRS;
 using AuthService.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +24,7 @@ namespace AuthService.API.Controllers
         {
             await _commandDispatcher.DispatchAsync(command);
             
-            return Created();
+            return Ok();
         }
     }
 }
