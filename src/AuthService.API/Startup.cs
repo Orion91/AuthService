@@ -24,28 +24,34 @@ namespace AuthService.API
     public class Startup
     {
         public IContainer ApplicationContainer { get; private set; }
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env)
         {
-            Configuration = configuration;
+			var builder = new ConfigurationBuilder()
+				.SetBasePath(env.ContentRootPath)
+				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+				.AddEnvironmentVariables();
+			Configuration = builder.Build();
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; private set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+		public ILifetimeScope AutofacContainer { get; private set; }
+
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRepository, InMemoryUserRepository>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IPasswordService, PasswordService>();  
-            services.AddControllers();
+            services.AddScoped<IPasswordService, PasswordService>();
+			services.AddOptions();
+			services.AddControllers();
+		}
 
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
+		public void ConfigureContainer(ContainerBuilder builder)
+		{
 			builder.RegisterModule<CommandModule>();
-            ApplicationContainer = builder.Build();
-
-            return new AutofacServiceProvider(ApplicationContainer);
-        }
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
@@ -55,18 +61,18 @@ namespace AuthService.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+			app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+			app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
+			AutofacContainer = app.ApplicationServices.GetAutofacRoot();
         }
     }
 }
