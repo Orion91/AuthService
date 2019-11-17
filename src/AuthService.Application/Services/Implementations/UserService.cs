@@ -16,6 +16,7 @@ namespace AuthService.Application.Services.Implementations
             _userRepository = userRepository;
             _passwordService = passwordService;
         }
+
         public async Task SignUpAsync(string username, string password, string email = "")
         {
             if(await UserExistsAsync(username))
