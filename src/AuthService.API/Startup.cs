@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using AuthService.Application.IoC.Modules;
 
 namespace AuthService.API
 {
@@ -40,6 +41,7 @@ namespace AuthService.API
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
+			builder.RegisterModule<CommandModule>();
             ApplicationContainer = builder.Build();
 
             return new AutofacServiceProvider(ApplicationContainer);
