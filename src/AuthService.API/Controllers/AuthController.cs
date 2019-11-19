@@ -28,10 +28,15 @@ namespace AuthService.API.Controllers
 		}
 
 		[HttpGet]
-		public string Get()
+		public async Task<IActionResult> Get(string username)
 		{
-			var anonymousType = new { message = "Test message", value = 2 };
-			return anonymousType.message;
+			var user = await _userService.UserExistsAsync(username);
+			if (!user)
+			{
+				return NotFound();
+			}
+
+			return Ok(user);
 		}
 	}
 }
