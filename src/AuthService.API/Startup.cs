@@ -43,7 +43,7 @@ namespace AuthService.API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IUserRepository, InMemoryUserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPasswordService, PasswordService>();
 			services.AddOptions();

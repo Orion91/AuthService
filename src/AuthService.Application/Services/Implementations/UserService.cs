@@ -28,12 +28,12 @@ namespace AuthService.Application.Services.Implementations
             _passwordService.CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
             var userToCreate = new User(username, email, passwordHash, passwordSalt);
-            await _userRepository.AddAsync(userToCreate);
+            await _userRepository.AddNewAsync(userToCreate);
         }
 
         public async Task<bool> UserExistsAsync(string username)
         {
-            var userFromRepo = await _userRepository.GetAsync(username);
+            var userFromRepo = await _userRepository.GetUserByUsernameAsync(username);
             if(userFromRepo is null)
                 return false;
             return true;

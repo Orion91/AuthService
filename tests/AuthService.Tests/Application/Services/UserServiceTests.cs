@@ -23,7 +23,7 @@ namespace AuthService.Tests.Application.Services
 			var userService = new UserService(userRepositoryMock.Object, passwordServiceMock.Object);
 			await userService.SignUpAsync("user", "secret", email: "user@email.com");
 
-			userRepositoryMock.Verify(x => x.AddAsync(It.IsAny<User>()), Times.Once);
+			userRepositoryMock.Verify(x => x.AddNewAsync(It.IsAny<User>()), Times.Once);
 		}
 
 		[Fact]

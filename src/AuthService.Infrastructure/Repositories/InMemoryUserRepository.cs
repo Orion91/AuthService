@@ -15,12 +15,12 @@ namespace AuthService.Infrastructure.Repositories
 		{
 			Users = Enumerable.Empty<User>();
 		}
-		public async Task AddAsync(User user)
+		public async Task AddNewAsync(User user)
 		{
 			Users.Append(user);
 		}
 
-		public async Task<User> GetAsync(string username)
+		public async Task<User> GetUserByUsernameAsync(string username)
 		{
 			return Users.FirstOrDefault(u => u.Username == username);
 		}

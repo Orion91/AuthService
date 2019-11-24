@@ -4,14 +4,19 @@ namespace AuthService.Core.Models
 {
     public class User
     {
-        public int Id { get; private set; }
-        public string Username { get; private set; }
-        public string Email { get; private set; }
-        public string AvatarUrl { get; private set; }
-        public byte[] PasswordHash { get; private set; }
-        public byte[] PasswordSalt { get; private set; }
-        public DateTime CreatedAt { get; private set; }
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string AvatarUrl { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
+        public DateTime CreatedAt { get;  set; }
         public DateTime LastActive  { get; set; }
+
+		public User()
+		{
+
+		}
 
         public User(string username, 
                     string email,

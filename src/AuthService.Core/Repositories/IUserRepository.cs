@@ -5,7 +5,7 @@ namespace AuthService.Core.Repositories
 {
     public interface IUserRepository
     {
-        Task<User> GetAsync(string username);
-        Task AddAsync(User user);
+        Task<User> GetUserByUsernameAsync(string username);
+        Task AddNewAsync(User user);
     }
 }

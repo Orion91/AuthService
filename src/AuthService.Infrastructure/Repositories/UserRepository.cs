@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using AuthService.Core.Models;
 using AuthService.Core.Repositories;
@@ -17,7 +18,7 @@ namespace AuthService.Infrastructure.Repositories
 		{
 			_sqlSettings = sqlSettings;
 		}
-        public async Task AddAsync(User user)
+        public async Task AddNewAsync(User user)
         {
 			using (IDbConnection conn = new SqlConnection(_sqlSettings.ConnectionString))
 			{
@@ -35,9 +36,21 @@ namespace AuthService.Infrastructure.Repositories
 			}
         }
 
-        public Task<User> GetAsync(string username)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
+		public async Task<User> GetUserByUsernameAsync(string username)
+		{
+			User user = null;
+			using (IDbConnection conn = new SqlConnection(_sqlSettings.ConnectionString))
+			{
+				if (conn.State == ConnectionState.Closed)
+					conn.Open();
+
+				DynamicParameters parameters = new DynamicParameters();
+				parameters.Add("@Username", username);
+
+				user = await conn.QueryFirstOrDefaultAsync<User>("Users_GetUserByUsername", parameters, commandType: CommandType.StoredProcedure);
+			}
+
+			return user;
+		}
+	}
 }
