@@ -18,13 +18,19 @@ using Microsoft.Extensions.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AuthService.Application.IoC.Modules;
+using AuthService.Infrastructure.IoC.Modules;
 
 namespace AuthService.API
 {
     public class Startup
     {
         public IContainer ApplicationContainer { get; private set; }
-        public Startup(IWebHostEnvironment env)
+
+		public ILifetimeScope AutofacContainer { get; private set; }
+
+		public IConfiguration Configuration { get; private set; }
+
+		public Startup(IWebHostEnvironment env)
         {
 			var builder = new ConfigurationBuilder()
 				.SetBasePath(env.ContentRootPath)
@@ -33,10 +39,6 @@ namespace AuthService.API
 				.AddEnvironmentVariables();
 			Configuration = builder.Build();
         }
-
-        public IConfiguration Configuration { get; private set; }
-
-		public ILifetimeScope AutofacContainer { get; private set; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
@@ -51,6 +53,7 @@ namespace AuthService.API
 		public void ConfigureContainer(ContainerBuilder builder)
 		{
 			builder.RegisterModule<CommandModule>();
+			builder.RegisterModule(new InfrastructureSettingsModule(Configuration));
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
