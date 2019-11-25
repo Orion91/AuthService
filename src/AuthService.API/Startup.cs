@@ -19,6 +19,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AuthService.Application.IoC.Modules;
 using AuthService.Infrastructure.IoC.Modules;
+using FluentValidation.AspNetCore;
 
 namespace AuthService.API
 {
@@ -47,7 +48,8 @@ namespace AuthService.API
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPasswordService, PasswordService>();
 			services.AddOptions();
-			services.AddControllers();
+			services.AddControllers()
+					.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Startup>());
 		}
 
 		public void ConfigureContainer(ContainerBuilder builder)

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AuthService.API.Contracts.Request;
 using AuthService.Application.Commands;
 using AuthService.Application.CQRS;
 using AuthService.Application.Services.Interfaces;
@@ -21,8 +22,10 @@ namespace AuthService.API.Controllers
 		}
 
 		[HttpPost("signUp")]
-		public async Task<IActionResult> SignUp(SignUp command)
+		public async Task<IActionResult> SignUp(SignUpRequest request)
 		{
+
+			var command = new SignUp(request.Username, request.Password, request.Email);
 			await _commandDispatcher.DispatchAsync(command);
 
 			return Ok();
