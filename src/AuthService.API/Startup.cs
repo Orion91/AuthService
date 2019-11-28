@@ -49,7 +49,7 @@ namespace AuthService.API
             services.AddScoped<IPasswordService, PasswordService>();
 			services.AddOptions();
 			services.AddControllers()
-					.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Startup>());
+				.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Startup>());
 		}
 
 		public void ConfigureContainer(ContainerBuilder builder)

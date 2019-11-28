@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AuthService.API.Contracts.Request;
 using AuthService.Application.Commands;
@@ -24,11 +25,17 @@ namespace AuthService.API.Controllers
 		[HttpPost("signUp")]
 		public async Task<IActionResult> SignUp(SignUpRequest request)
 		{
+			try
+			{
+				var command = new SignUp(request.Username, request.Password, request.Email);
+				await _commandDispatcher.DispatchAsync(command);
+			} 
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
 
-			var command = new SignUp(request.Username, request.Password, request.Email);
-			await _commandDispatcher.DispatchAsync(command);
-
-			return Ok();
+			return Ok($"User {request.Username} signed up.");
 		}
 
 		[HttpGet]
