@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using AuthService.Application.Commands;
+using AuthService.Application.DTO;
 using AuthService.Application.Services.Interfaces;
 using AuthService.Core.Models;
 using AuthService.Core.Repositories;
@@ -17,7 +19,31 @@ namespace AuthService.Application.Services.Implementations
             _passwordService = passwordService;
         }
 
-        public async Task SignUpAsync(string username, string password, string email = "")
+		public async Task<JwtDto> SignInAsync(SignIn command)
+		{
+			if (command is null)
+			{
+				throw new Exception("Sign in command can not be empty");
+			}
+			//Get user from repo
+			var userFromRepo = await _userRepository.GetUserByUsernameAsync(command.Username);
+			if (userFromRepo is null)
+			{
+				throw new Exception($"User with username: {command.Username} does not exist");
+			}
+			//Compare password hashes
+			if(!_passwordService.VerifyPasswordHash(command.Password, userFromRepo.PasswordHash, userFromRepo.PasswordSalt))
+			{
+				throw new Exception("Invalid password");
+			}
+
+			//Generate jwt token
+
+			//return jwtDto to endpoint
+			return new JwtDto();
+		}
+
+		public async Task SignUpAsync(string username, string password, string email = "")
         {
             if(await UserExistsAsync(username))
             {

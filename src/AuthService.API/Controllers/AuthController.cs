@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using AuthService.API.Contracts.Request;
+using AuthService.API.Contracts.Requests;
 using AuthService.Application.Commands;
 using AuthService.Application.CQRS;
 using AuthService.Application.Services.Interfaces;
@@ -32,10 +32,25 @@ namespace AuthService.API.Controllers
 			} 
 			catch (Exception ex)
 			{
-				return BadRequest(ex.Message);
+				return Unauthorized(ex.Message);
 			}
 
 			return Ok($"User {request.Username} signed up.");
+		}
+
+		[HttpPost("signIn")]
+		public async Task<IActionResult> SignIn(SignInRequest request)
+		{
+			try
+			{
+				var command = new SignIn(request.Username, request.Password);
+				await _commandDispatcher.DispatchAsync(command);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+			return Ok();
 		}
 
 		[HttpGet]
