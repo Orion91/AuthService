@@ -21,6 +21,8 @@ namespace AuthService.Infrastructure.IoC.Modules
 
 			builder.RegisterInstance(_configuration.GetSettings<SqlSettings>())
 					.SingleInstance();
+			builder.RegisterInstance(_configuration.GetSettings<JwtSettings>())
+					.SingleInstance();
 		}
 	}
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using AuthService.API.Contracts.Requests;
+using AuthService.API.Contracts.Responses;
 using AuthService.Application.Commands;
 using AuthService.Application.CQRS;
 using AuthService.Application.Services.Interfaces;
@@ -29,13 +30,13 @@ namespace AuthService.API.Controllers
 			{
 				var command = new SignUp(request.Username, request.Password, request.Email);
 				await _commandDispatcher.DispatchAsync(command);
+
+				return Ok($"User {request.Username} signed up.");
 			} 
 			catch (Exception ex)
 			{
-				return Unauthorized(ex.Message);
+				return Unauthorized(new ErrorResponse(ex.Message));
 			}
-
-			return Ok($"User {request.Username} signed up.");
 		}
 
 		[HttpPost("signIn")]
@@ -44,25 +45,14 @@ namespace AuthService.API.Controllers
 			try
 			{
 				var command = new SignIn(request.Username, request.Password);
-				await _commandDispatcher.DispatchAsync(command);
+				var jwtToken = await _userService.SignInAsync(command);
+
+				return Ok(new SignInResponse(jwtToken.AccessToken));
 			}
 			catch (Exception ex)
 			{
-				return BadRequest(ex.Message);
+				return BadRequest(new ErrorResponse(ex.Message));
 			}
-			return Ok();
-		}
-
-		[HttpGet]
-		public async Task<IActionResult> Get(string username)
-		{
-			var user = await _userService.UserExistsAsync(username);
-			if (!user)
-			{
-				return NotFound();
-			}
-
-			return Ok(user);
 		}
 	}
 }

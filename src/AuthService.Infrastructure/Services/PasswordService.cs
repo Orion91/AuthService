@@ -18,10 +18,13 @@ namespace AuthService.Infrastructure.Services
             using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
 			{
 				var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-				if (computedHash != passwordHash)
-					return false;
-				return true;
+				for (int i = 0; i < computedHash.Length; ++i)
+				{
+					if (computedHash[i] != passwordHash[i])
+						return false;
+				}
 			}
-        }
+			return true;
+		}
     }
 }

@@ -12,12 +12,14 @@ namespace AuthService.Application.Services.Implementations
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordService _passwordService;
+		private readonly IJwtProvider _jwtProvider;
 
-        public UserService(IUserRepository userRepository, IPasswordService passwordService)
+		public UserService(IUserRepository userRepository, IPasswordService passwordService, IJwtProvider jwtProvider)
         {
             _userRepository = userRepository;
             _passwordService = passwordService;
-        }
+			_jwtProvider = jwtProvider;
+		}
 
 		public async Task<JwtDto> SignInAsync(SignIn command)
 		{
@@ -38,9 +40,10 @@ namespace AuthService.Application.Services.Implementations
 			}
 
 			//Generate jwt token
+			var jwtToReturn = _jwtProvider.CreateToken(userFromRepo.Id, userFromRepo.Username);
 
 			//return jwtDto to endpoint
-			return new JwtDto();
+			return jwtToReturn;
 		}
 
 		public async Task SignUpAsync(string username, string password, string email = "")

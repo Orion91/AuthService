@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 
 namespace AuthService.API.Contracts.Responses
 {
-	public class ErrorResponse
+	public class SignInResponse
 	{
-		public string Error { get; set; }
-		public ErrorResponse(string error)
+		public string AccessToken { get; private set; }
+
+		public SignInResponse(string accessToken)
 		{
-			Error = error;
+			AccessToken = accessToken;
 		}
 	}
 }

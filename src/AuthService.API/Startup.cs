@@ -47,6 +47,7 @@ namespace AuthService.API
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPasswordService, PasswordService>();
+			services.AddScoped<IJwtProvider, JwtProvider>();
 			services.AddOptions();
 			services.AddControllers()
 				.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Startup>());

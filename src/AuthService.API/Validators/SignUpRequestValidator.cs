@@ -1,4 +1,4 @@
-﻿using AuthService.API.Contracts.Request;
+﻿using AuthService.API.Contracts.Requests;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
